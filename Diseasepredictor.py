@@ -10,6 +10,8 @@ heart_disease_model = pickle.load(open('G:\College\Disease Predictor\Models\hear
 
 parkinsons_model = pickle.load(open('G:\College\Disease Predictor\Models\parkinsons_model.sav', 'rb'))
 
+liver_model = pickle.load(open('G:\College\Disease Predictor\Models\liver_model.sav', 'rb'))
+
 
 #designing the interface
 
@@ -18,8 +20,9 @@ with st.sidebar:
     selected = option_menu('Multiple Disease Prediction System',
                            ['Diabetes Prediction',
                             'Heart Disease Prediction',
-                            'Parkinsons Prediction'],
-                            icons = ['activity', 'heart', 'person'],
+                            'Parkinsons Prediction',
+                            'Liver Disease Prediction'],
+                            icons = ['activity', 'heart', 'person', 'hospital'],
                             default_index=0)
     
 
@@ -72,8 +75,6 @@ if (selected == 'Diabetes Prediction'):
           diab_diagnosis = 'The person is not diabetic'
         
     st.success(diab_diagnosis)
-
-
 
 
 # Heart Disease Prediction Page
@@ -140,9 +141,7 @@ if (selected == 'Heart Disease Prediction'):
           heart_diagnosis = 'The person does not have any heart disease'
         
     st.success(heart_diagnosis)
-        
-    
-    
+           
 
 # Parkinson's Prediction Page
 if (selected == "Parkinsons Prediction"):
@@ -234,3 +233,59 @@ if (selected == "Parkinsons Prediction"):
         
     st.success(parkinsons_diagnosis)
 
+
+# Liver Prediction Page
+if (selected == 'Liver Disease Prediction'):
+    
+    # page title
+    st.title('Liver Disease Prediction using ML')
+    
+    
+    # getting the input data from the user
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        age = st.text_input('Age')
+        
+    with col2:
+        gender = st.text_input(label = 'Gender', placeholder = '1 = Male')
+    
+    with col3:
+        tbilirubin = st.text_input('Total Bilirubin')
+    
+    with col1:
+        dbilirubin = st.text_input('Direct Bilirubin')
+    
+    with col2:
+        alkaline = st.text_input('Alkaline Phosphotase')
+    
+    with col3:
+        alamine = st.text_input('Alamine Aminotransferase')
+    
+    with col1:
+        aspartate = st.text_input('Aspartate Aminotransferase')
+    
+    with col2:
+        protein = st.text_input('Total Protiens')
+    
+    with col3:
+        albumin = st.text_input('Albumin')
+
+    with col1:
+        ratio = st.text_input('Albumin & Globulin Ratio')
+    
+    
+    # code for Prediction
+    liver_diagnosis = ''
+    
+    # creating a button for Prediction
+    
+    if st.button('Liver Test Result'):
+        liver_prediction = liver_model.predict([[age, gender, tbilirubin, dbilirubin, alkaline, alamine, aspartate, protein, albumin, ratio]])
+        
+        if (liver_prediction[0] == 1):
+          liver_diagnosis = 'The person has low risk of liver disease'
+        else:
+          liver_diagnosis = 'The person has high risk of liver disease'
+        
+    st.success(liver_diagnosis)
